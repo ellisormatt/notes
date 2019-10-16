@@ -1,0 +1,12 @@
+- initialize a new repository
+  - git init
+- adds the file to local staging area
+  - git add filename.txt
+- see what has been changed in local file
+  - git diff filename.txt
+- permanently store changes from staging area in a repository
+  - git commit -m "these are the changes i made"
+- view log of actions on repo
+  - git log
+- view status of working directory
+  - git status
