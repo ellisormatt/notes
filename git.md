@@ -10,3 +10,16 @@
   - git log
 - view status of working directory
   - git status
+
+- initial git setup
+  - set username
+    - git config --global user.name "Matt Ellisor"
+  - set email address
+    - git config --global user.email "email@example.com"
+
+
+- saving changes
+  - add repo
+    - git remote add origin git@github.com:ellisormatt/repo.git
+  - push commits to repo
+    - got push -u origin master
