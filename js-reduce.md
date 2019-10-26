@@ -23,6 +23,7 @@ const numbers = [1,2,3,4,5];
 // accumulator = 3, currentValue = 3 => accumulator = 6
 // accumulator = 6, currentValue = 4 => accumulator = 10
 // accumulator = 10, currentValue = 5 => accumulator = 15
+
 const sum = numbers.reduce((accumulator,currentValue) => {
         return accumulator + currentValue;
 }, 0);
