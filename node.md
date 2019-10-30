@@ -121,4 +121,75 @@
     };
     fs.readFile('./file.txt', 'utf-8', readDataCallback);
     ```
+    - fs.readFile('filepath/name.txt','encoding',callbackFunction);
+        - encoding UTF-8
     
+## readable streams
+- streaming data involves processing data sequentially, piece by piece
+- this is preferrable because you dont need enough RAM to process all the data at once, nor do you need all data up front to begin processing
+    - ex: reading files line by line
+    - to read line by line we can use .createInterface() from the readline core module
+    - .createInterface() returns an EventEmitter set up to emit 'line' events
+    ```js
+    const readline = require('readline');
+    const fs = require('fs');
+
+    const myInterface = readline.createInterface({
+        input: fs.createReadStream('text.txt')
+    });
+
+    myInterface.on('line', (fileLine) => {
+        console.log(`The line read: ${fileLine}`);
+    });
+    ```
+    - assign myInterface the returned value from invoking *readline.createInterface()* with an object containing our designated input
+    - set our *input* to fs.createReadStream('text.txt') which will create a stream from the text.txt file
+    - next assign a listener callback to execute when *line* events are emitted
+        - *line* events are emitted after each line from the file is read
+    - the listener callback will log to console 'the line read: [fileLine]'
+        - where [fileLine] is the line just read
+
+## writable streams
+- we can create a writable stream to a file using the *fs.createWriteStream()* method:
+    ```js
+    const fs = require('fs')
+    const fileStream = fs.createWriteStream('output.txt');
+    fileStream.write('This is the first line!'); 
+    fileStream.write('This is the second line!');
+    fileStream.end();
+    ```
+
+## HTTP module
+- http module contains functions which simplify interacting with HTTP and streamline receiving and responding to requests
+- the http.createServer() method returns an instance of an http.server
+    - an http.server has a method .listen() which causes the server to listen for incoming connections
+    - when we run http.createServer() we pass in a custom callback function
+    - this callback function will be triggered once the server is listening and receives a request
+    - breakdown:
+        - the function expects two args: a request object and a response object
+        - each time a request to the server is made, Node will invoke the provided *requestListener* callback function, passing in the request and response objects of the incoming request
+        - request and response objects come with a number of properties and methods of their own, and within the requestListener function, we can access information about the request via the request object passed in
+        - the *requestListener* is responsible for setting the response header and body
+        - the *requestListener* must signal that the interaction is complete by calling the *response.end()* method
+
+    ```js
+    const http = require('http');
+    let requestListener = (request, response) => {
+        response.writeHead(200, {'Content-Type': 'text/plain' });
+        response.write('Hello World!\n');
+        response.end();
+    };
+    const server = http.createServer(requestListener);
+    server.listen(3000);
+
+    ```
+
+    - required the http core module
+    - created a *server* veriable assigned to the return value of the http.createServer() method
+    - invoked http.createServer() with our requestListener callback
+        - similar to running the .on() of an EventEmitter
+        - the requestListener will execute whenever an HTTP request is sent to the server on the connected port
+    - within requestListener callback, make changes to the response object, *response*, so that is can send the appropriate information to the client sending the request
+        - status code 200 means no errors were encountered
+        - header communicates that the file type is text, rather than something like audio or compressed data
+    - last line starts the server with port 3000
