@@ -28,11 +28,9 @@
     ```js
     // dog.js
     module.exports = class Dog {
-
         constructor(name) {
             this.name = name;
         }
-
         praise() {
             return `Good dog, ${this.name}!`;
         }
@@ -44,5 +42,83 @@
     let Dog = require('./dog.js');
     const tadpole = new Dog('Tadpole');
     console.log(tadpole.praise());
+    ```
+## NPM
+- NPM is an online registry of software shared by other devs
+- nodemon monitors your code for changes and restarts an application when it detects changes
+
+## event driven architecture
+- in web apps, we need to write logic to handle situations without knowing exactly when they will occur
+    - ex: listening for a click event without knowing when it will trigger
+- node was created with the same principles to the back-end environment
+- node provides an EventEmitter class which we can access by requiring the *events* core module
+    ```js
+    // Require in the 'events' core module
+    let events = require('events');
+    // Create an instance of the EventEmitter class
+    let myEmitter = new events.EventEmitter();
+    ```
+    - each event emitter instance has an **.on()** method which assigns a listener callback function to a named event
+        - the .on() method takes as its first argument the name of the event as a string and as a second argument the listener callback function
+    - each event emitter instance also has an **.emit()** method which announces a named event has occurred
+        - the .emit() method takes as its first argument the name of the event as a string and as its second argument, the data that should be passed into the listener callback function
+    ```js
+    let newUserListener = (data) => {
+    console.log(`We have a new user: ${data}.`);
+    };
+
+    // Assign the newUserListener function as the listener callback for 'new user' events
+    myEmitter.on('new user', newUserListener)
+
+    // Emit a 'new user' event
+    myEmitter.emit('new user', 'Lily Pad') //newUserListener will be invoked with 'Lily Pad'
+    ```
+
+## user input/output
+- in Node, console.log() method is a 'thin wrapper' on the *.stdout.write()* method of the *process* object
+- in Node, we can also receive input from a user through the terminal using the *stdin.on()* method on the *process* object
+    ```js
+    process.stdin.on('data', (userInput) => {
+    let input = userInput.toString()
+    console.log(input)
+    });
+    ```
+    - here we are able to use *.on()* because process.stdin is an instance of EventEmitter
+    - when a user enters text into the terminal and hits enter, a 'data' event will be fired and our listener callback will be invoked
+    - the userInput we receive is an instance of the Node Buffer class, so we convert to string before printing
+
+## Errors
+- many asynchronous node APIs use *error-first callback functions*
+    - these are callback functions with an error as the first expected argument and data as the second argument
+        - if the asynchronous task results in an error, it will be passed in as the first argument to the callback function
+        - if no error was thrown, the first argument will be *undefined*
+    ```js
+    const errorFirstCallback = (err, data)  => {
+    if (err) {
+        console.log(`There WAS an error: ${err}`);
+    } else {
+        // err was falsy
+        console.log(`There was NO error. Event data: ${data}`);
+        }
+    }
+    ```
+
+## filesystem
+- when running js code on a browser it is important for a script to have only limited access to a user's filesystem
+    - technique known as *sandboxing*
+- Node back end is less restricted
+- Node fs core module is an API for interacting with the file system
+    - each method available through the fs module has a synchronous version and an asynchronous version
+    - one method available on the fs core module is the .readFile() method, which reads data from a provided file:
+    ```js
+    const fs = require('fs');
+    let readDataCallback = (err, data) => {
+        if (err) {
+            console.log(`Something went wrong: ${err}`);
+        } else {
+            console.log(`Provided file contained: ${data}`);
+        }
+    };
+    fs.readFile('./file.txt', 'utf-8', readDataCallback);
     ```
     
