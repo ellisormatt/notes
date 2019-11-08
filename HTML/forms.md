@@ -183,3 +183,69 @@
 <form>
   <input type="submit" value="Send">
 </form>
+
+# required field
+```html
+<form action="/example.html" method="POST">
+  <label for="allergies">Do you have any dietary restrictions?</label>
+  <br>
+  <input id="allergies" name="allergies" type="text" required>
+  <br>
+  <input type="submit" value="Submit">
+</form>
+```
+<form action="/example.html" method="POST">
+  <label for="allergies">Do you have any dietary restrictions?</label>
+  <br>
+  <input id="allergies" name="allergies" type="text" required>
+  <br>
+  <input type="submit" value="Submit">
+</form>
+
+# min/max
+```html
+<form action="/example.html" method="POST">
+  <label for="guests">Enter # of guests:</label>
+  <input id="guests" name="guests" type="number" min="1" max="4">
+  <input type="submit" value="Submit">
+</form>
+```
+<form action="/example.html" method="POST">
+  <label for="guests">Enter # of guests:</label>
+  <input id="guests" name="guests" type="number" min="1" max="4">
+  <input type="submit" value="Submit">
+</form>
+
+# checking text length
+```html
+<form action="/example.html" method="POST">
+  <label for="summary">Summarize your fillings in less than 250 characters</label>
+  <input id="summary" name="summary" type="text" minlength="5" maxlength="250" required>
+  <input type="submit" value="Submit">
+</form>
+```
+<form action="/example.html" method="POST">
+  <label for="summary">Summarize your fillings in less than 250 characters</label>
+  <input id="summary" name="summary" type="text" minlength="5" maxlength="250" required>
+  <input type="submit" value="Submit">
+</form>
+
+# matching a pattern
+```html
+<form action="/example.html" method="POST">
+  <label for="payment">Credit Card Number (no spaces):</label>
+  <br>
+  <input id="payment" name="payment" type="text" required pattern="[0-9]{14,16}">
+  <input type="submit" value="Submit">
+</form>
+```
+<form action="/example.html" method="POST">
+  <label for="payment">Credit Card Number (no spaces):</label>
+  <br>
+  <input id="payment" name="payment" type="text" required pattern="[0-9]{14,16}">
+  <input type="submit" value="Submit">
+</form>
+- above: [0-9]{14,16}
+    - checks that user provides only numbers and that they entered at least 14 digits and at most 16 digits
+
+
